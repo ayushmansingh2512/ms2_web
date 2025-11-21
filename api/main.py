@@ -77,7 +77,9 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         if db_user:
             raise HTTPException(status_code=400, detail="Email already registered")
         
-        hashed_password = auth.get_password_hash(user.password)
+        # Truncate password to 72 characters before hashing
+        truncated_password = user.password[:72]
+        hashed_password = auth.get_password_hash(truncated_password)
         db_user = models.User(
             email=user.email, 
             hashed_password=hashed_password,

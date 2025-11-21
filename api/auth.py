@@ -38,8 +38,14 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password , hashed_password)
-def get_password_hash(password ):
+    # Truncate to 72 characters to stay well under bcrypt's 72-byte limit
+    # (72 characters will always be <= 72 bytes for ASCII, and usually safe for UTF-8)
+    plain_password = plain_password[:72]
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    # Truncate to 72 characters to stay well under bcrypt's 72-byte limit
+    password = password[:72]
     return pwd_context.hash(password)
 def authenticate_user(db:Session,email:str,password:str):
     user = crud.get_user_by_email(db,email=email)
