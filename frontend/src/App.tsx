@@ -1,4 +1,3 @@
-
 // App.tsx (Updated)
 import { Route, Routes } from "react-router-dom"
 import Blog from "./components/Blog"
