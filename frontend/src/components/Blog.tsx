@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import api from '../api';
+import { getImageUrl } from "../utils";
 import { Link } from "react-router-dom";
 
 interface Category {
@@ -97,7 +98,7 @@ const Blog = () => {
     const token = localStorage.getItem('access_token');
     setIsLoggedIn(!!token);
 
-    let postsUrl = `http://localhost:8000/posts/`;
+    let postsUrl = `/posts/`;
     const params = new URLSearchParams();
     if (selectedCategory !== null) {
       params.append('category_id', selectedCategory.toString());
@@ -353,7 +354,7 @@ const Blog = () => {
                   }}>
                     {post.image_url ? (
                       <img
-                        src={post.image_url?.startsWith('http') ? post.image_url : `http://localhost:8000${post.image_url}`}
+                        src={getImageUrl(post.image_url)}
                         alt={post.title}
                         style={{
                           width: '100%',
@@ -561,7 +562,7 @@ const Blog = () => {
                     marginBottom: '16px'
                   }}>
                     <img
-                      src={selectedPost.image_url?.startsWith('http') ? selectedPost.image_url : `http://localhost:8000${selectedPost.image_url}`}
+                      src={getImageUrl(selectedPost.image_url)}
                       alt={selectedPost.title}
                       style={{
                         width: '100%',
@@ -769,7 +770,7 @@ const Blog = () => {
                 }}>
                   {post.image_url ? (
                     <img
-                      src={post.image_url?.startsWith('http') ? post.image_url : `http://localhost:8000${post.image_url}`}
+                      src={getImageUrl(post.image_url)}
                       alt={post.title}
                       style={{
                         width: '100%',
@@ -978,7 +979,7 @@ const Blog = () => {
                   backgroundColor: '#f3f4f6'
                 }}>
                   <img
-                    src={selectedPost.image_url?.startsWith('http') ? selectedPost.image_url : `http://localhost:8000${selectedPost.image_url}`}
+                    src={getImageUrl(selectedPost.image_url)}
                     alt={selectedPost.title}
                     style={{
                       width: '100%',

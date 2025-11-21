@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
+import { getImageUrl } from "../utils";
  
 
 interface Category {
@@ -41,10 +42,10 @@ const EditPost: React.FC = () => {
             }
 
             try {
-                const categoriesResponse = await axios.get<Category[]>('http://localhost:8000/post-categories/');
+                const categoriesResponse = await api.get<Category[]>('/post-categories/');
                 setCategories(categoriesResponse.data);
 
-                const postResponse = await axios.get<Post>(`http://localhost:8000/posts/${postId}`, {
+                const postResponse = await api.get<Post>(`/posts/${postId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -88,7 +89,7 @@ const EditPost: React.FC = () => {
             formData.append('file', selectedFile);
 
             try {
-                const uploadResponse = await fetch('http://localhost:8000/uploadfile/', {
+                const uploadResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/uploadfile/`, {
                     method: 'POST',
                     body: formData,
                 });
@@ -109,8 +110,8 @@ const EditPost: React.FC = () => {
         }
 
         try {
-            const response = await axios.put(
-                `http://localhost:8000/posts/${postId}/`,
+            const response = await api.put(
+                `/posts/${postId}/`,
                 { title, content, image_url: imageUrlToSave, category_id: selectedCategoryId },
                 {
                     headers: {
@@ -172,7 +173,7 @@ const EditPost: React.FC = () => {
                     {currentImageUrl && (
                         <div className="image-preview">
                             <p>Current Image:</p>
-                            <img src={`http://localhost:8000${currentImageUrl}`} alt="Current Post" />
+                            <img src={getImageUrl(currentImageUrl)} alt="Current Post" />
                         </div>
                     )}
                     <input

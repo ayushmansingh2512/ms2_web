@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api";
+import { getImageUrl } from "../utils";
 import { useParams, useNavigate } from "react-router-dom";
 import {
     Avatar,
@@ -148,7 +149,7 @@ const PublicProfile = () => {
                                     <CardMedia
                                         component="img"
                                         height="200"
-                                        image={post.image_url ? (post.image_url.startsWith('http') ? post.image_url : `http://localhost:8000${post.image_url}`) : 'https://via.placeholder.com/300?text=No+Image'}
+                                        image={getImageUrl(post.image_url)}
                                         alt={post.title}
                                         sx={{ objectFit: 'cover' }}
                                     />

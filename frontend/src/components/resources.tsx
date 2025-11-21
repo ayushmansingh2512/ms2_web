@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import api from "../api";
+import { getImageUrl } from "../utils";
 import { Link } from "react-router-dom";
 
 interface Category {
@@ -82,7 +83,7 @@ const Resources = () => {
     const token = localStorage.getItem('access_token');
     setIsLoggedIn(!!token);
 
-    let resourcesUrl = `http://localhost:8000/resources/`;
+    let resourcesUrl = `/resources/`;
     const params = new URLSearchParams();
     if (selectedCategory !== null) {
       params.append('category_id', selectedCategory.toString());
@@ -101,7 +102,7 @@ const Resources = () => {
     }
 
     const fetchResources = axios.get(resourcesUrl);
-    const fetchCategories = axios.get('http://localhost:8000/resource-categories/');
+    const fetchCategories = api.get('/resource-categories/');
 
     Promise.all([fetchResources, fetchCategories])
       .then(([resourcesResponse, categoriesResponse]) => {
@@ -294,7 +295,7 @@ const Resources = () => {
                   }}>
                     {resource.image_url ? (
                       <img 
-                        src={`http://localhost:8000${resource.image_url}`} 
+                        src={getImageUrl(resource.image_url)} 
                         alt={resource.title} 
                         style={{ 
                           width: '100%', 
@@ -671,7 +672,7 @@ const Resources = () => {
                 }}>
                   {resource.image_url ? (
                     <img 
-                      src={`http://localhost:8000${resource.image_url}`} 
+                      src={getImageUrl(resource.image_url)} 
                       alt={resource.title} 
                       style={{ 
                         width: '100%', 
@@ -870,7 +871,7 @@ const Resources = () => {
                   backgroundColor: '#f3f4f6'
                 }}>
                   <img
-                    src={`http://localhost:8000${selectedResource.image_url}`}
+                    src={getImageUrl(selectedResource.image_url)}
                     alt={selectedResource.title}
                     style={{ 
                       width: '100%', 

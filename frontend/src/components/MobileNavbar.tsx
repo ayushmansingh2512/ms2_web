@@ -344,7 +344,7 @@ const MobileNavbar = () => {
       Sign Up
     </Link>
 <a
-  href="http://localhost:8000/auth/google/login"
+  href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/auth/google/login`}
   style={{
     display: "block",
     width: "100%",

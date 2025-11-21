@@ -77,7 +77,7 @@ const Navbar = () => {
   }, []);
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8000/auth/google/login";
+    window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/auth/google/login`;
     setIsDropdownOpen(false);
   };
 
@@ -216,7 +216,7 @@ const Navbar = () => {
             fontSize: "32px",
           }}
         >
-          UNIBlog
+          unino+e
         </Link>
         
         <div

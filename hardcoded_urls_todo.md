@@ -1,0 +1,15 @@
+- [x] `AuthCallBack.tsx`
+- [x] `Blog.tsx`
+- [x] `CategoryManagement.tsx`
+- [x] `club.tsx`
+- [x] `ClubCategoryManagement.tsx`
+- [x] `CreateClub.tsx`
+- [x] `CreatePost.tsx`
+- [x] `CreateResource.tsx`
+- [x] `EditPost.tsx`
+- [x] `MobileNavbar.tsx`
+- [x] `Navbar.tsx`
+- [x] `PublicProfile.tsx`
+- [x] `ResourceCategoryManagement.tsx`
+- [x] `resources.tsx`
+- [ ] `UserProfile.tsx`

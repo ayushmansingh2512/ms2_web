@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import api from "../api";
+import { getImageUrl } from "../utils";
 import { Link } from "react-router-dom";
 
 interface Category {
@@ -79,7 +80,7 @@ const Clubs = () => {
     const token = localStorage.getItem('access_token');
     setIsLoggedIn(!!token);
 
-    let clubsUrl = `http://localhost:8000/clubs/`;
+    let clubsUrl = `/clubs/`;
     const params = new URLSearchParams();
     if (selectedCategory !== null) {
       params.append('category_id', selectedCategory.toString());
@@ -98,7 +99,7 @@ const Clubs = () => {
     }
 
     const fetchClubs = axios.get(clubsUrl);
-    const fetchCategories = axios.get('http://localhost:8000/club-categories/');
+    const fetchCategories = api.get('/club-categories/');
 
     Promise.all([fetchClubs, fetchCategories])
       .then(([clubsResponse, categoriesResponse]) => {
@@ -289,9 +290,8 @@ const Clubs = () => {
                     marginBottom: '12px'
                   }}>
                     {club.image_url ? (
-                      <img 
-                        src={`http://localhost:8000${club.image_url}`} 
-                        alt={club.name} 
+                                          <img 
+                                            src={getImageUrl(club.image_url)}                        alt={club.name} 
                         style={{ 
                           width: '100%', 
                           height: '100%', 
@@ -663,7 +663,7 @@ const Clubs = () => {
                 }}>
                   {club.image_url ? (
                     <img 
-                      src={`http://localhost:8000${club.image_url}`} 
+                      src={getImageUrl(club.image_url)} 
                       alt={club.name} 
                       style={{ 
                         width: '100%', 
@@ -835,7 +835,7 @@ const Clubs = () => {
                   backgroundColor: '#f3f4f6'
                 }}>
                   <img
-                    src={`http://localhost:8000${selectedClub.image_url}`} 
+                    src={getImageUrl(selectedClub.image_url)} 
                     alt={selectedClub.name}
                     style={{ 
                       width: '100%', 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { useNavigate } from 'react-router-dom';
 
 interface Category {
@@ -22,7 +22,7 @@ const ResourceCategoryManagement: React.FC = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get<Category[]>('http://localhost:8000/resource-categories/');
+            const response = await api.get<Category[]>('/resource-categories/');
             setCategories(response.data);
         } catch (err: any) {
             console.error('Error fetching resource categories:', err);
@@ -45,8 +45,8 @@ const ResourceCategoryManagement: React.FC = () => {
             return;
         }
         try {
-            const response = await axios.post<Category>(
-                'http://localhost:8000/resource-categories/',
+            const response = await api.post<Category>(
+                '/resource-categories/',
                 { name: newCategoryName },
                 {
                     headers: {

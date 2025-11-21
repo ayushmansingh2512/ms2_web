@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useLocation } from "react-router-dom"
-import axios from 'axios'
+import api from '../api'
 
 const AuthCallBack = () => {
   const [loading, setLoading] = useState(true)
@@ -38,7 +38,7 @@ const AuthCallBack = () => {
         console.log('Authorization code received, processing...')
 
         // Send the code to your backend
-        const response = await axios.get(`http://localhost:8000/auth/google/callback?code=${code}`, {
+        const response = await api.get(`/auth/google/callback?code=${code}`, {
           timeout: 10000 // 10 second timeout
         })
         
@@ -103,7 +103,7 @@ const AuthCallBack = () => {
         <button onClick={() => {
           localStorage.removeItem('access_token')
           localStorage.removeItem('token_type')
-          window.location.href = 'http://localhost:8000/auth/google/login'
+          window.location.href = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/auth/google/login`
         }} style={{ marginTop: '10px' }}>
           Try Login Again
         </button>

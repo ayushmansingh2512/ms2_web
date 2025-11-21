@@ -21,7 +21,7 @@ const CreateResource: React.FC = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost:8000/resource-categories/');
+                const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/resource-categories/`);
                 if (response.ok) {
                     const data = await response.json();
                     setCategories(data);
@@ -69,7 +69,7 @@ const CreateResource: React.FC = () => {
             formData.append('file', selectedFile);
 
             try {
-                const uploadResponse = await fetch('http://localhost:8000/uploadfile/', {
+                const uploadResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/uploadfile/`, {
                     method: 'POST',
                     body: formData,
                 });
@@ -92,7 +92,7 @@ const CreateResource: React.FC = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/resources/', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/resources/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
