@@ -63,6 +63,20 @@ class Post(Base):
     owner = relationship("User" , back_populates="posts")
     category = relationship("PostCategory", back_populates="posts")
     bookmarks = relationship("Bookmark", back_populates="post", cascade="all, delete-orphan")
+    comments = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(Text, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    post_id = Column(Integer, ForeignKey("posts.id"))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    
+    user = relationship("User")
+    post = relationship("Post", back_populates="comments")
 
 
 class Resource(Base):

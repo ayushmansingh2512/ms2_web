@@ -378,3 +378,42 @@ def create_club_category(
 def read_club_categories(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     categories = crud.get_club_categories(db, skip=skip, limit=limit)
     return categories
+
+# Comment endpoints
+@app.post("/posts/{post_id}/comments/", response_model=schemas.Comment, status_code=status.HTTP_201_CREATED)
+def create_comment(
+    post_id: int,
+    comment: schemas.CommentCreate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    # Verify post exists
+    db_post = crud.get_post(db, post_id=post_id)
+    if not db_post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    # Ensure the comment is for the correct post
+    comment.post_id = post_id
+    return crud.create_comment(db=db, comment=comment, user_id=current_user.id)
+
+@app.get("/posts/{post_id}/comments/", response_model=List[schemas.Comment])
+def get_post_comments(post_id: int, db: Session = Depends(get_db)):
+    # Verify post exists
+    db_post = crud.get_post(db, post_id=post_id)
+    if not db_post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    return crud.get_comments_by_post(db=db, post_id=post_id)
+
+@app.delete("/comments/{comment_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_comment(
+    comment_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    db_comment = crud.get_comment(db, comment_id=comment_id)
+    if not db_comment:
+        raise HTTPException(status_code=404, detail="Comment not found")
+    if db_comment.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this comment")
+    crud.delete_comment(db=db, comment_id=comment_id)

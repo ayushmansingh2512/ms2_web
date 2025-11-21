@@ -21,6 +21,15 @@ interface Bookmark {
   created_at: string;
 }
 
+interface Comment {
+  id: number;
+  content: string;
+  user_id: number;
+  post_id: number;
+  created_at: string;
+  user: User;
+}
+
 interface Post {
   id: number;
   title: string;
@@ -48,6 +57,8 @@ const Blog = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isDateFilterOpen, setIsDateFilterOpen] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [commentText, setCommentText] = useState<string>('');
   const dateFilterRef = useRef<HTMLDivElement>(null);
 
   // Mobile detection
@@ -69,14 +80,62 @@ const Blog = () => {
     return text.substring(0, maxLength) + '...';
   };
 
-  const handleCardClick = (post: Post) => {
+  const handleCardClick = async (post: Post) => {
     setSelectedPost(post);
     setIsModalOpen(true);
+    // Fetch comments for this post
+    try {
+      const response = await api.get(`/posts/${post.id}/comments/`);
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      setComments([]);
+    }
   };
 
   const handleCloseModal = () => {
     setSelectedPost(null);
     setIsModalOpen(false);
+    setComments([]);
+    setCommentText('');
+  };
+
+  const handleSubmitComment = async () => {
+    if (!commentText.trim() || !selectedPost) return;
+
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      alert("Please log in to comment.");
+      return;
+    }
+
+    try {
+      const response = await api.post(
+        `/posts/${selectedPost.id}/comments/`,
+        { content: commentText, post_id: selectedPost.id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setComments([response.data, ...comments]);
+      setCommentText('');
+    } catch (error) {
+      console.error("Error posting comment:", error);
+      alert("Failed to post comment. Please try again.");
+    }
+  };
+
+  const handleDeleteComment = async (commentId: number) => {
+    const token = localStorage.getItem('access_token');
+    if (!token) return;
+
+    try {
+      await api.delete(`/comments/${commentId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setComments(comments.filter(c => c.id !== commentId));
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      alert("Failed to delete comment.");
+    }
   };
 
   useEffect(() => {
@@ -645,6 +704,139 @@ const Blog = () => {
                 }}>
                   {selectedPost.content}
                 </div>
+
+                {/* Comments Section - Mobile */}
+                <div style={{
+                  marginTop: '24px',
+                  paddingTop: '24px',
+                  borderTop: '1px solid #e5e7eb'
+                }}>
+                  <h2 style={{
+                    fontSize: '20px',
+                    fontWeight: '600',
+                    color: '#222222',
+                    marginBottom: '16px',
+                    margin: '0 0 16px 0'
+                  }}>
+                    Comments ({comments.length})
+                  </h2>
+
+                  {/* Comment Form - Mobile */}
+                  {isLoggedIn && (
+                    <div style={{ marginBottom: '16px' }}>
+                      <textarea
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        placeholder="Write a comment..."
+                        style={{
+                          width: '100%',
+                          minHeight: '80px',
+                          padding: '12px',
+                          border: '1px solid #dddddd',
+                          borderRadius: '8px',
+                          fontSize: '16px',
+                          fontFamily: 'inherit',
+                          resize: 'vertical',
+                          outline: 'none'
+                        }}
+                      />
+                      <button
+                        onClick={handleSubmitComment}
+                        disabled={!commentText.trim()}
+                        style={{
+                          marginTop: '8px',
+                          padding: '10px 20px',
+                          backgroundColor: commentText.trim() ? '#222222' : '#dddddd',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '16px',
+                          fontWeight: '600',
+                          cursor: commentText.trim() ? 'pointer' : 'not-allowed',
+                          width: '100%'
+                        }}
+                      >
+                        Post Comment
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Comments List - Mobile */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {comments.length > 0 ? (
+                      comments.map(comment => (
+                        <div key={comment.id} style={{
+                          padding: '12px',
+                          backgroundColor: '#f7f7f7',
+                          borderRadius: '8px'
+                        }}>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            marginBottom: '8px'
+                          }}>
+                            <div>
+                              <div style={{
+                                fontWeight: '600',
+                                color: '#222222',
+                                fontSize: '14px'
+                              }}>
+                                {comment.user.username || comment.user.email}
+                              </div>
+                              <div style={{
+                                fontSize: '12px',
+                                color: '#717171',
+                                marginTop: '2px'
+                              }}>
+                                {new Date(comment.created_at).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric'
+                                })}
+                              </div>
+                            </div>
+                            {isLoggedIn && comment.user_id === JSON.parse(localStorage.getItem('user') || '{}').id && (
+                              <button
+                                onClick={() => handleDeleteComment(comment.id)}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: '#ff385c',
+                                  cursor: 'pointer',
+                                  fontSize: '14px',
+                                  fontWeight: '500',
+                                  padding: '4px'
+                                }}
+                              >
+                                Delete
+                              </button>
+                            )}
+                          </div>
+                          <p style={{
+                            color: '#484848',
+                            fontSize: '14px',
+                            lineHeight: '1.5',
+                            margin: 0,
+                            whiteSpace: 'pre-wrap',
+                            wordBreak: 'break-word'
+                          }}>
+                            {comment.content}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <p style={{
+                        textAlign: 'center',
+                        color: '#717171',
+                        fontSize: '14px',
+                        padding: '24px 0'
+                      }}>
+                        No comments yet. Be the first to comment!
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1067,6 +1259,155 @@ const Blog = () => {
                   wordBreak: 'break-word'
                 }}>
                   {selectedPost.content}
+                </div>
+
+                {/* Comments Section */}
+                <div style={{
+                  marginTop: '2rem',
+                  paddingTop: '2rem',
+                  borderTop: '1px solid #e5e7eb'
+                }}>
+                  <h2 style={{
+                    fontSize: '1.5rem',
+                    fontWeight: '600',
+                    color: '#222222',
+                    marginBottom: '1rem',
+                    margin: '0 0 1rem 0'
+                  }}>
+                    Comments ({comments.length})
+                  </h2>
+
+                  {/* Comment Form */}
+                  {isLoggedIn && (
+                    <div style={{ marginBottom: '1.5rem' }}>
+                      <textarea
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        placeholder="Write a comment..."
+                        style={{
+                          width: '100%',
+                          minHeight: '80px',
+                          padding: '12px',
+                          border: '1px solid #dddddd',
+                          borderRadius: '8px',
+                          fontSize: '1rem',
+                          fontFamily: 'inherit',
+                          resize: 'vertical',
+                          outline: 'none',
+                          transition: 'border-color 0.2s ease'
+                        }}
+                        onFocus={(e) => e.currentTarget.style.borderColor = '#222222'}
+                        onBlur={(e) => e.currentTarget.style.borderColor = '#dddddd'}
+                      />
+                      <button
+                        onClick={handleSubmitComment}
+                        disabled={!commentText.trim()}
+                        style={{
+                          marginTop: '8px',
+                          padding: '10px 20px',
+                          backgroundColor: commentText.trim() ? '#222222' : '#dddddd',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '1rem',
+                          fontWeight: '600',
+                          cursor: commentText.trim() ? 'pointer' : 'not-allowed',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (commentText.trim()) {
+                            e.currentTarget.style.backgroundColor = '#000000';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (commentText.trim()) {
+                            e.currentTarget.style.backgroundColor = '#222222';
+                          }
+                        }}
+                      >
+                        Post Comment
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Comments List */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {comments.length > 0 ? (
+                      comments.map(comment => (
+                        <div key={comment.id} style={{
+                          padding: '1rem',
+                          backgroundColor: '#f7f7f7',
+                          borderRadius: '8px',
+                          position: 'relative'
+                        }}>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            marginBottom: '0.5rem'
+                          }}>
+                            <div>
+                              <span style={{
+                                fontWeight: '600',
+                                color: '#222222',
+                                fontSize: '0.95rem'
+                              }}>
+                                {comment.user.username || comment.user.email}
+                              </span>
+                              <span style={{
+                                marginLeft: '8px',
+                                fontSize: '0.85rem',
+                                color: '#717171'
+                              }}>
+                                {new Date(comment.created_at).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </span>
+                            </div>
+                            {isLoggedIn && comment.user_id === JSON.parse(localStorage.getItem('user') || '{}').id && (
+                              <button
+                                onClick={() => handleDeleteComment(comment.id)}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: '#ff385c',
+                                  cursor: 'pointer',
+                                  fontSize: '0.85rem',
+                                  fontWeight: '500',
+                                  padding: '4px 8px'
+                                }}
+                              >
+                                Delete
+                              </button>
+                            )}
+                          </div>
+                          <p style={{
+                            color: '#484848',
+                            fontSize: '0.95rem',
+                            lineHeight: '1.5',
+                            margin: 0,
+                            whiteSpace: 'pre-wrap',
+                            wordBreak: 'break-word'
+                          }}>
+                            {comment.content}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <p style={{
+                        textAlign: 'center',
+                        color: '#717171',
+                        fontSize: '0.95rem',
+                        padding: '2rem 0'
+                      }}>
+                        No comments yet. Be the first to comment!
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

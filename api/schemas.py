@@ -186,3 +186,20 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: str | None = None
+
+# Comment schemas
+class CommentBase(BaseModel):
+    content: str
+
+class CommentCreate(CommentBase):
+    post_id: int
+
+class Comment(CommentBase):
+    id: int
+    user_id: int
+    post_id: int
+    created_at: datetime
+    user: UserPublic
+    
+    class Config:
+        from_attributes = True
