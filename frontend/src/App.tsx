@@ -16,14 +16,15 @@ import CreateClub from "./components/CreateClub"
 import Navbar from "./components/Navbar"
 import ResourceCategoryManagement from "./components/ResourceCategoryManagement"
 import ClubCategoryManagement from "./components/ClubCategoryManagement"
-import Mobnav from "./components/MobNav"
 import PublicProfile from "./components/PublicProfile"
+import MobNav from "./components/MobNav"
+
 
 const App = () => {
   return (
     <div>
       <Navbar />
-      <Mobnav />
+      <MobNav />
       <Routes>
         <Route path="/" element={<Blog />} />
         <Route path="/auth/google/callback" element={<AuthCallBack />} />
