@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 
-const MobNav = () => {
+const MobileNavbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -380,4 +380,4 @@ const MobNav = () => {
   );
 };
 
-export default MobNav;
+export default MobileNavbar;
