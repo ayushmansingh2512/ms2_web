@@ -1,0 +1,29 @@
+PS C:\Users\91638\Desktop\neovim\9> cd .\backend\
+PS C:\Users\91638\Desktop\neovim\9\backend> .\venv\Scripts\activate
+(venv) PS C:\Users\91638\Desktop\neovim\9\backend> netstat -ano | findstr :8000
+  TCP    127.0.0.1:49345        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:50739        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:52019        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:53441        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:53523        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:54125        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:54994        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:55296        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:55570        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:56120        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:56653        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:59039        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:62156        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:62937        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:63113        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:64293        127.0.0.1:8000         TIME_WAIT       0
+  TCP    127.0.0.1:65256        127.0.0.1:8000         TIME_WAIT       0
+(venv) PS C:\Users\91638\Desktop\neovim\9\backend> taskkill /PID <PID> /F
+At line:1 char:15
++ taskkill /PID <PID> /F
++               ~
+The '<' operator is reserved for future use.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : RedirectionNotSupported
+
+(venv) PS C:\Users\91638\Desktop\neovim\9\backend> 
