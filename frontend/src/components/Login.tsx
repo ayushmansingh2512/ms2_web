@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate, Link } from "react-router-dom";
 import { Container, Typography, TextField, Button, Box, Alert, Divider } from "@mui/material";
 import GoogleIcon from '@mui/icons-material/Google';
@@ -17,8 +17,8 @@ const Login = () => {
     setError("");
     
     try {
-      const response = await axios.post(
-        "http://localhost:8000/auth/token",
+      const response = await api.post(
+        "/auth/token",
         new URLSearchParams({
           username: email,
           password: password,
@@ -99,7 +99,7 @@ const Login = () => {
           fullWidth
           variant="outlined"
           startIcon={<GoogleIcon />}
-          href="http://localhost:8000/auth/google/login"
+          href={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/auth/google/login`}
         >
           Login with Google
         </Button>

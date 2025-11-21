@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate, Link } from "react-router-dom";
 import { Container, Typography, TextField, Button, Box, Alert } from "@mui/material";
 
@@ -17,7 +17,7 @@ const Signup = () => {
     setError("");
     
     try {
-      await axios.post("http://localhost:8000/users/", {
+      await api.post("/users/", {
         email,
         password,
         username,
