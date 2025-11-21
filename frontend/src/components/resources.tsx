@@ -101,7 +101,7 @@ const Resources = () => {
       resourcesUrl += `?${params.toString()}`;
     }
 
-    const fetchResources = axios.get(resourcesUrl);
+    const fetchResources = api.get(resourcesUrl);
     const fetchCategories = api.get('/resource-categories/');
 
     Promise.all([fetchResources, fetchCategories])

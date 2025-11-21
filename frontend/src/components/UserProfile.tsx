@@ -159,11 +159,6 @@ const UserProfile = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const getImageUrl = (url?: string) => {
-    if (!url) return 'https://via.placeholder.com/300?text=No+Image';
-    return url.startsWith('http') ? url : `http://localhost:8000${url}`;
-  };
-
   if (loading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: 'center', height: '100vh' }}>

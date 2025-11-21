@@ -98,7 +98,7 @@ const Clubs = () => {
       clubsUrl += `?${params.toString()}`;
     }
 
-    const fetchClubs = axios.get(clubsUrl);
+    const fetchClubs = api.get(clubsUrl);
     const fetchCategories = api.get('/club-categories/');
 
     Promise.all([fetchClubs, fetchCategories])
