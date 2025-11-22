@@ -38,7 +38,7 @@ const App = () => {
         <Route path="/create-resource" element={<CreateResource />} />
         <Route path="/clubs" element={<Clubs />} />
         <Route path="/create-club" element={<CreateClub />} />
-        <Route path="/  " element={<ResourceCategoryManagement />} />
+        <Route path="/create-resource" element={<ResourceCategoryManagement />} />
         <Route path="/club-categories" element={<ClubCategoryManagement />} />
         <Route path="/profile/:userId" element={<PublicProfile />} />
       </Routes>
