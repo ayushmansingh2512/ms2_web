@@ -466,6 +466,7 @@ const Blog = () => {
                   {/* Mobile Content */}
                   <div style={{ padding: '0' }}>
                     <h3 style={{
+                      fontFamily: "'American Typewriter', serif",
                       fontSize: '16px',
                       fontWeight: '600',
                       color: '#222222',
@@ -633,6 +634,7 @@ const Blog = () => {
                 )}
 
                 <h1 style={{
+                  fontFamily: "'American Typewriter', serif",
                   fontSize: '24px',
                   fontWeight: '700',
                   color: '#222222',
@@ -1018,6 +1020,7 @@ const Blog = () => {
                 {/* Content - Airbnb style */}
                 <div style={{ padding: '0' }}>
                   <h3 style={{
+                    fontFamily: "'American Typewriter', serif",
                     fontSize: '1rem',
                     fontWeight: '600',
                     color: '#222222',
@@ -1187,6 +1190,7 @@ const Blog = () => {
                 {/* Title and Category */}
                 <div style={{ marginBottom: '1.5rem' }}>
                   <h1 style={{
+                    fontFamily: "'American Typewriter', serif",
                     fontSize: '2rem',
                     fontWeight: '700',
                     color: '#222222',

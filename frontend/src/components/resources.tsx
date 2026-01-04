@@ -40,10 +40,10 @@ const Resources = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -126,13 +126,13 @@ const Resources = () => {
   // Mobile Layout
   if (isMobile) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
+      <div style={{
+        minHeight: '100vh',
         backgroundColor: '#ffffff',
         fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
       }}>
         {/* Mobile Header - Airbnb style */}
-        <header style={{ 
+        <header style={{
           backgroundColor: "#ffffff",
           padding: '16px',
           position: 'sticky',
@@ -151,9 +151,9 @@ const Resources = () => {
             border: '1px solid #dddddd',
             marginBottom: '16px'
           }}>
-            <img 
-              src="/search.svg" 
-              alt="Search" 
+            <img
+              src="/search.svg"
+              alt="Search"
               style={{
                 width: '16px',
                 height: '16px',
@@ -238,8 +238,8 @@ const Resources = () => {
 
         {/* Mobile Create Post Button */}
         {isLoggedIn && (
-          <Link 
-            to="/create-resource" 
+          <Link
+            to="/create-resource"
             style={{
               position: 'fixed',
 
@@ -274,8 +274,8 @@ const Resources = () => {
               gap: '24px'
             }}>
               {resources.map(resource => (
-                <div 
-                  key={resource.id} 
+                <div
+                  key={resource.id}
                   style={{
                     cursor: 'pointer',
                     transition: 'transform 0.2s ease',
@@ -294,14 +294,14 @@ const Resources = () => {
                     marginBottom: '12px'
                   }}>
                     {resource.image_url ? (
-                      <img 
-                        src={getImageUrl(resource.image_url)} 
-                        alt={resource.title} 
-                        style={{ 
-                          width: '100%', 
-                          height: '100%', 
+                      <img
+                        src={getImageUrl(resource.image_url)}
+                        alt={resource.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
                           objectFit: 'cover'
-                        }} 
+                        }}
                       />
                     ) : (
                       <div style={{
@@ -321,8 +321,8 @@ const Resources = () => {
 
                   {/* Mobile Content */}
                   <div style={{ padding: '0' }}>
-                    <h3 style={{ 
-                      fontSize: '16px', 
+                    <h3 style={{
+                      fontSize: '16px',
                       fontWeight: '600',
                       color: '#222222',
                       marginBottom: '4px',
@@ -335,8 +335,8 @@ const Resources = () => {
                     }}>
                       {resource.title}
                     </h3>
-                    
-                    <p style={{ 
+
+                    <p style={{
                       fontSize: '14px',
                       color: '#717171',
                       marginBottom: '8px',
@@ -420,7 +420,7 @@ const Resources = () => {
               boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.15)',
               overflow: 'hidden'
             }} onClick={(e) => e.stopPropagation()}>
-              
+
               {/* Mobile Close Button */}
               <div style={{
                 padding: '16px',
@@ -471,8 +471,8 @@ const Resources = () => {
                     <img
                       src={`http://localhost:8000${selectedResource.image_url}`}
                       alt={selectedResource.title}
-                      style={{ 
-                        width: '100%', 
+                      style={{
+                        width: '100%',
                         height: '100%',
                         objectFit: 'cover'
                       }}
@@ -480,8 +480,8 @@ const Resources = () => {
                   </div>
                 )}
 
-                <h1 style={{ 
-                  fontSize: '24px', 
+                <h1 style={{
+                  fontSize: '24px',
                   fontWeight: '700',
                   color: '#222222',
                   marginBottom: '12px',
@@ -490,7 +490,7 @@ const Resources = () => {
                 }}>
                   {selectedResource.title}
                 </h1>
-                
+
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -545,7 +545,7 @@ const Resources = () => {
                   <h3>What it Teaches:</h3>
                   <p>{selectedResource.teachings}</p>
                   <h3>Link:</h3>
-                  <a href={selectedResource.link} target="_blank" rel="noopener noreferrer">{selectedResource.link}</a>
+                  <a href={selectedResource.link} target="_blank" rel="noopener noreferrer">Resource Link</a>
                 </div>
               </div>
             </div>
@@ -557,19 +557,19 @@ const Resources = () => {
 
   // Desktop Layout (Original - Unchanged)
   return (
-    <div style={{ 
-      minHeight: '100vh', 
+    <div style={{
+      minHeight: '100vh',
       backgroundColor: '#ffffff',
       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
       {/* Header */}
-      <header style={{ 
+      <header style={{
         backgroundColor: "#f6f5f5",
         display: "flex",
         justifyContent: "center",
         padding: '1rem 0',
         marginBottom: '2rem',
-        alignItems:"center",
+        alignItems: "center",
         borderBottom: '1px solid #e5e7eb'
       }}>
         <div className="filter-bar">
@@ -587,7 +587,7 @@ const Resources = () => {
           </select>
 
           <div style={{ position: 'relative' }} ref={dateFilterRef}>
-            <button 
+            <button
               className="search-blog date-filter-button"
               onClick={() => setIsDateFilterOpen(!isDateFilterOpen)}
             >
@@ -622,11 +622,11 @@ const Resources = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-blog search-button"
           />
-<div className="search-blog ">
-  <button className=" search-glass">
-  <img className="search-svg" src="/search.svg" alt="Search" />
-</button>
-</div>
+          <div className="search-blog ">
+            <button className=" search-glass">
+              <img className="search-svg" src="/search.svg" alt="Search" />
+            </button>
+          </div>
 
         </div>
       </header>
@@ -652,14 +652,14 @@ const Resources = () => {
                 transition: 'transform 0.2s ease',
                 position: 'relative'
               }}
-              onClick={() => handleCardClick(resource)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-4px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}>
-                
+                onClick={() => handleCardClick(resource)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}>
+
                 {/* Image Container - Airbnb style */}
                 <div style={{
                   width: '100%',
@@ -671,15 +671,15 @@ const Resources = () => {
                   marginBottom: '12px'
                 }}>
                   {resource.image_url ? (
-                    <img 
-                      src={getImageUrl(resource.image_url)} 
-                      alt={resource.title} 
-                      style={{ 
-                        width: '100%', 
-                        height: '100%', 
+                    <img
+                      src={getImageUrl(resource.image_url)}
+                      alt={resource.title}
+                      style={{
+                        width: '100%',
+                        height: '100%',
                         objectFit: 'cover',
                         objectPosition: 'center'
-                      }} 
+                      }}
                     />
                   ) : (
                     <div style={{
@@ -699,8 +699,8 @@ const Resources = () => {
 
                 {/* Content - Airbnb style */}
                 <div style={{ padding: '0' }}>
-                  <h3 style={{ 
-                    fontSize: '1rem', 
+                  <h3 style={{
+                    fontSize: '1rem',
                     fontWeight: '600',
                     color: '#222222',
                     marginBottom: '4px',
@@ -712,8 +712,8 @@ const Resources = () => {
                   }}>
                     {resource.title}
                   </h3>
-                  
-                  <p style={{ 
+
+                  <p style={{
                     fontSize: '0.875rem',
                     color: '#717171',
                     marginBottom: '8px',
@@ -725,7 +725,7 @@ const Resources = () => {
                     {resource.truncatedContext}
                   </p>
 
-                  <p style={{ 
+                  <p style={{
                     fontSize: '0.875rem',
                     color: '#717171',
                     marginBottom: '8px',
@@ -749,9 +749,9 @@ const Resources = () => {
                       display: 'block'
                     }}
                   >
-                    {resource.link}
+                    Resource Link
                   </a>
-                  
+
                   {/* Category and Date */}
                   <div style={{
                     fontSize: '0.875rem',
@@ -826,7 +826,7 @@ const Resources = () => {
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
             overflow: 'hidden'
           }} onClick={(e) => e.stopPropagation()}>
-            
+
             {/* Close Button */}
             <button onClick={handleCloseModal} style={{
               position: 'absolute',
@@ -847,14 +847,14 @@ const Resources = () => {
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
               transition: 'all 0.2s ease'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#ffffff';
-              e.currentTarget.style.transform = 'scale(1.05)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-              e.currentTarget.style.transform = 'scale(1)';
-            }}>
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#ffffff';
+                e.currentTarget.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}>
               ×
             </button>
 
@@ -873,8 +873,8 @@ const Resources = () => {
                   <img
                     src={getImageUrl(selectedResource.image_url)}
                     alt={selectedResource.title}
-                    style={{ 
-                      width: '100%', 
+                    style={{
+                      width: '100%',
                       height: '100%',
                       objectFit: 'contain'
                     }}
@@ -886,8 +886,8 @@ const Resources = () => {
               <div style={{ padding: '2rem' }}>
                 {/* Title and Category */}
                 <div style={{ marginBottom: '1.5rem' }}>
-                  <h1 style={{ 
-                    fontSize: '2rem', 
+                  <h1 style={{
+                    fontSize: '2rem',
                     fontWeight: '700',
                     color: '#222222',
                     marginBottom: '0.5rem',
@@ -896,7 +896,7 @@ const Resources = () => {
                   }}>
                     {selectedResource.title}
                   </h1>
-                  
+
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -918,7 +918,7 @@ const Resources = () => {
                         <span style={{ color: '#ddd' }}>•</span>
                       </>
                     )}
-                    
+
                     <span style={{
                       fontSize: '0.875rem',
                       color: '#717171'
@@ -964,4 +964,3 @@ const Resources = () => {
 };
 
 export default Resources;
- 
